@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>Olá Mundo</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block container %}
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nome</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">Telefone</th>
+      <th scope="col">data Criação</th>
+      <th scope="col">Categoria</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contato in contatos %}
+    {% if contato.ativo %}
+    <tr>
+      <th scope="row">{{ contato.id }}</th>
+      <td>
+        <a href="{% url 'ver_contato' contato.id %}">
+          {{ contato.nome }} {{ contato.sobre_nome }}
+        </a>
+      </td>
+      <td>{{ contato.email }}</td>
+      <td>{{ contato.telefone }}</td>
+      <td>{{ contato.data_criacao|date:'d/m/Y'}}</td>
+      <td>{{ contato.categoria }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock container %}
