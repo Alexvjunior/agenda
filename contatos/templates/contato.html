@@ -1,6 +1,23 @@
 {% extends 'base.html' %}
 
 {% block container %}
+<div id="div-contato">
+<h1>{{contato.nome}} {{contato.sobre_nome}}</h1>
+
+
+<h5>Telefone</h5>
+<h6>{{contato.telefone}}</h6>
+
+<h5>E-mail</h5>
+<h6>{{contato.email}}</h6>
+
+<h5>Data Criação</h5>
+<h6>{{contato.data_criacao|date:'d/m/Y'}}</h6>
+
+<h5>Categoria</h5>
+<h6>{{contato.categoria}}</h6>
+
+</div>
 
 {% endblock container %}
 

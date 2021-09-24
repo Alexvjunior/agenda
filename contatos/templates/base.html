@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -19,9 +19,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'busca' %}">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="termo" value="{{ request.GET.termo }}">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'adicionar' %}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Adicionar</button>
             </form>
         </div>
     </nav>

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+{% if not valido and valido is not None %}
+  <div class="alert alert-danger">
+    <strong> {{mensagem}} </strong>
+  </div>
+{% endif %}
+
+
+<form method="POST" action="{% url 'adicionar' %}">{% csrf_token %}
+  <div class="form-group">
+    <label for="nome">Nome</label>
+    <input type="text" value="{{request.POST.nome}}" name="nome" class="form-control" id="nome" aria-describedby="emailHelp" placeholder="Escreva seu nome">
+  </div>
+
+  <div class="form-group">
+    <label for="sobre_nome">Sobrenome</label>
+    <input type="text" value="{{request.POST.sobre_nome}}" name="sobre_nome" class="form-control" id="sobre_nome" placeholder="Escreva seu sobrenome">
+  </div>
+
+  <div class="form-group">
+    <label for="telefone">Telefone</label>
+    <input type="text" value="{{request.POST.telefone}}" name="telefone" class="form-control" id="telefone" aria-describedby="emailHelp" placeholder="Seu telefone">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" value="{{request.POST.email}}" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Escreva seu e-mail">
+  </div>
+
+  <div class="form-group">
+    <select class="form-control form-control-sm" name="categoria">
+    <option></option>
+      {% for c in categorias  %}
+        <option value="{{c.id}}">{{c.nome}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group form-check">
+    <label class="form-check-label" for="ativo">Ativo</label>
+    <input type="checkbox" name="ativo" class="form-check-input" id="ativo">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock container %}

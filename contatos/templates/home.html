@@ -7,6 +7,7 @@
     <tr>
       <th scope="col">Id</th>
       <th scope="col">Nome</th>
+      <th scope="col">Sobrenome</th>
       <th scope="col">E-mail</th>
       <th scope="col">Telefone</th>
       <th scope="col">data Criação</th>
@@ -15,23 +16,38 @@
   </thead>
   <tbody>
     {% for contato in contatos %}
-    {% if contato.ativo %}
     <tr>
       <th scope="row">{{ contato.id }}</th>
       <td>
         <a href="{% url 'ver_contato' contato.id %}">
-          {{ contato.nome }} {{ contato.sobre_nome }}
+          {{ contato.nome }}
         </a>
       </td>
+      <td>{{ contato.sobre_nome }}</td>
       <td>{{ contato.email }}</td>
       <td>{{ contato.telefone }}</td>
       <td>{{ contato.data_criacao|date:'d/m/Y'}}</td>
       <td>{{ contato.categoria }}</td>
     </tr>
-    {% endif %}
     {% endfor %}
   </tbody>
 </table>
+
+<nav aria-label="...">
+  <ul class="pagination">
+  {% for pagina in contatos.paginator.page_range %}
+
+  {% if contatos.number == pagina %}
+    <li class="page-item active"><a class="page-link" href="?p={{pagina}}&termo={{request.GET.termo}}">{{pagina}}</a></li>
+  {% else %}
+    <li class="page-item"><a class="page-link" href="?p={{pagina}}&termo={{request.GET.termo}}">{{pagina}}</a></li>
+  {% endif %}
+
+
+    
+  {% endfor %}
+  </ul>
+</nav>
 
 
 {% endblock container %}
