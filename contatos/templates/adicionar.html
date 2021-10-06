@@ -8,33 +8,40 @@
   </div>
 {% endif %}
 
-
-<form method="POST" action="{% url 'adicionar' %}">{% csrf_token %}
+{% if  contato == None%}
+<form method="POST" action="{% url 'adicionar'%}">{% csrf_token %}
+{% else %}
+<form method="PUT" action="{% url 'editar' contato.id%}">{% csrf_token %}
+{% endif %}
   <div class="form-group">
     <label for="nome">Nome</label>
-    <input type="text" value="{{request.POST.nome}}" name="nome" class="form-control" id="nome" aria-describedby="emailHelp" placeholder="Escreva seu nome">
+    <input type="text" value="{{contato.nome}}" name="nome" class="form-control" id="nome" aria-describedby="emailHelp" placeholder="Escreva seu nome">
   </div>
 
   <div class="form-group">
     <label for="sobre_nome">Sobrenome</label>
-    <input type="text" value="{{request.POST.sobre_nome}}" name="sobre_nome" class="form-control" id="sobre_nome" placeholder="Escreva seu sobrenome">
+    <input type="text"  value="{{contato.sobre_nome}}" name="sobre_nome" class="form-control" id="sobre_nome" placeholder="Escreva seu sobrenome">
   </div>
 
   <div class="form-group">
     <label for="telefone">Telefone</label>
-    <input type="text" value="{{request.POST.telefone}}" name="telefone" class="form-control" id="telefone" aria-describedby="emailHelp" placeholder="Seu telefone">
+    <input type="text" value="{{contato.telefone}}" name="telefone" class="form-control" id="telefone" aria-describedby="emailHelp" placeholder="Seu telefone">
   </div>
 
   <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" value="{{request.POST.email}}" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Escreva seu e-mail">
+    <input type="email" value="{{contato.email}}" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Escreva seu e-mail">
   </div>
 
   <div class="form-group">
     <select class="form-control form-control-sm" name="categoria">
     <option></option>
       {% for c in categorias  %}
-        <option value="{{c.id}}">{{c.nome}}</option>
+        {% if contato.categoria.id == c.id %}
+          <option selected value="{{c.id}}">{{c.nome}}</option>
+        {% else %}
+          <option value="{{c.id}}">{{c.nome}}</option>
+        {% endif %}
       {% endfor %}
     </select>
   </div>

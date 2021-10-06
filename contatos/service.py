@@ -18,3 +18,9 @@ def buscar_contatos_by_termo(termo:str):
         Q(nome_completo__icontains=termo) | Q(telefone__icontains=termo) | Q(email__icontains=termo),
         ativo=True,
     ).order_by('nome')
+
+def deletar_contato_by_id(id:int) -> int:
+    return Contato.objects.filter(id=id).delete()
+
+def editar_contato_by_id(id:int, data:dict):
+    return Contato.objects.filter(id=id).update(**data)

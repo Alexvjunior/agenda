@@ -4,6 +4,8 @@ from . import service
 from django.core.paginator import Paginator
 from .serializers import ContatosSerializer
 from categoria.service import CategoriaService
+from django.http import HttpResponseRedirect
+
 
 CATEGORIA_SERVICE = CategoriaService()
 
@@ -19,6 +21,9 @@ class ContatosView(APIView):
         contato = service.buscar_contato_por_id(contato_id)
         return render(request=request, template_name='contato.html', context={'contato': contato})
 
+    def post(self, request, contato_id):
+        service.deletar_contato_by_id(contato_id)
+        return HttpResponseRedirect('/')
 
 class ContatosBuscaView(APIView):
     def get(self, request):
@@ -34,8 +39,27 @@ class ContatosAdicionarView(APIView):
         categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
         return render(request=request, template_name='adicionar.html', context={"categorias":categorias})
 
-    def post(self, request):
+    def post(self, request, contato_id=None):
         serializer = ContatosSerializer(data=request.data)
         if not serializer.is_valid():
             categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
             return render(request=request, template_name='adicionar.html', context={"valido":False, "mensagem":"Verifique os campos e tente novamente", "categorias":categorias})
+        if contato_id is None:
+            serializer.save()
+        else:
+            service.editar_contato_by_id(contato_id, serializer.data)
+        return HttpResponseRedirect('/')
+
+class ContatosEditarView(APIView):
+    http_method_names = ['post', 'put']
+
+
+    def post(self, request, contato_id):
+        contato = service.buscar_contato_por_id(contato_id)
+        categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
+        return render(request=request, template_name='adicionar.html', context={"categorias":categorias, "contato":contato})
+   
+    def put(self, request, contato_id, *args, **kwargs):
+        contato = service.buscar_contato_por_id(contato_id)
+        categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
+        return render(request=request, template_name='adicionar.html', context={"categorias":categorias, "contato":contato})
