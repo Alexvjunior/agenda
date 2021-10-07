@@ -51,15 +51,23 @@ class ContatosAdicionarView(APIView):
         return HttpResponseRedirect('/')
 
 class ContatosEditarView(APIView):
-    http_method_names = ['post', 'put']
 
-
-    def post(self, request, contato_id):
+    def get(self, request, contato_id):
         contato = service.buscar_contato_por_id(contato_id)
         categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
-        return render(request=request, template_name='adicionar.html', context={"categorias":categorias, "contato":contato})
-   
-    def put(self, request, contato_id, *args, **kwargs):
-        contato = service.buscar_contato_por_id(contato_id)
-        categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
-        return render(request=request, template_name='adicionar.html', context={"categorias":categorias, "contato":contato})
+        return render(request=request, template_name='editar.html', context={"categorias":categorias, "contato":contato})
+
+
+    def post(self, request, contato_id=None):
+        if contato_id is not None:
+            contato = service.buscar_contato_por_id(contato_id)
+            categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
+            return render(request=request, template_name='editar.html', context={"categorias":categorias, "contato":contato})
+        serializer = ContatosSerializer(data=request.data)
+        if not serializer.is_valid():
+            categorias = CATEGORIA_SERVICE.buscar_todas_categorias()
+            return render(request=request, template_name='editar.html', context={"valido":False, "mensagem":"Verifique os campos e tente novamente", "categorias":categorias})
+        contato = service.buscar_contato_por_id(id)
+        categoria = CATEGORIA_SERVICE.buscar_categoria_by_id( request.data.get('categoria'))
+        service.editar_contato(contato, request.data, categoria)
+        return HttpResponseRedirect('/')

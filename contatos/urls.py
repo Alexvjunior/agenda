@@ -7,4 +7,5 @@ urlpatterns = [
     path('busca/', ContatosBuscaView.as_view(), name='busca'),
     path('adicionar', ContatosAdicionarView.as_view(), name='adicionar'),
     path('editar/<int:contato_id>', ContatosEditarView.as_view(), name='editar'),
+    path('editar/salvar/', ContatosEditarView.as_view(), name='editar_salvar'),
 ]
